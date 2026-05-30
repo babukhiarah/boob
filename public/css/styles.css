@@ -1,0 +1,206 @@
+/* ============================================================
+   نظام إدارة الورديات - فرع النزهة
+   تصميم عربي RTL - لون أخضر مريح
+   ============================================================ */
+
+:root {
+  --brand-green: #1f7a3a;
+  --brand-green-dark: #145c2a;
+  --brand-green-light: #e8f5ec;
+  --brand-accent: #f4a300;
+  --soft-bg: #f6faf7;
+  --card-shadow: 0 4px 14px rgba(20, 92, 42, 0.08);
+  --card-shadow-hover: 0 8px 22px rgba(20, 92, 42, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: "Tajawal", "Cairo", "Segoe UI", Arial, sans-serif;
+  background: var(--soft-bg);
+  color: #1a2b22;
+  min-height: 100vh;
+}
+
+/* ---------- Navbar ---------- */
+.navbar-brand-custom {
+  background: linear-gradient(90deg, var(--brand-green), var(--brand-green-dark));
+  color: #fff !important;
+  box-shadow: var(--card-shadow);
+}
+.navbar-brand-custom .navbar-brand,
+.navbar-brand-custom .nav-link {
+  color: #fff !important;
+  font-weight: 600;
+}
+.navbar-brand-custom .nav-link:hover { color: var(--brand-accent) !important; }
+
+/* ---------- Buttons ---------- */
+.btn-brand {
+  background: var(--brand-green);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  transition: all .2s ease;
+}
+.btn-brand:hover { background: var(--brand-green-dark); color: #fff; transform: translateY(-1px); }
+.btn-outline-brand {
+  border: 1.5px solid var(--brand-green);
+  color: var(--brand-green);
+  background: transparent;
+  font-weight: 600;
+}
+.btn-outline-brand:hover { background: var(--brand-green); color: #fff; }
+
+/* ---------- Cards ---------- */
+.card-soft {
+  border: none;
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  background: #fff;
+  transition: box-shadow .25s ease, transform .25s ease;
+  animation: fadeUp .35s ease;
+}
+.card-soft:hover { box-shadow: var(--card-shadow-hover); }
+
+.card-header-brand {
+  background: var(--brand-green-light);
+  color: var(--brand-green-dark);
+  font-weight: 700;
+  border-bottom: 1px solid #d6ecdb;
+  border-radius: 14px 14px 0 0 !important;
+}
+
+.product-card {
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e5efe7;
+  padding: 12px;
+  transition: all .2s ease;
+}
+.product-card:hover { border-color: var(--brand-green); }
+.product-card h6 { color: var(--brand-green-dark); font-weight: 700; margin: 0 0 8px; }
+.product-card .price-chip {
+  display: inline-block;
+  background: var(--brand-green-light);
+  color: var(--brand-green-dark);
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+.product-card .sold-line {
+  font-size: 0.9rem;
+  color: #2c5e3f;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed #d6ecdb;
+}
+
+/* ---------- Stat tiles ---------- */
+.stat-tile {
+  background: linear-gradient(135deg, #fff, var(--brand-green-light));
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+.stat-tile .label { font-size: 0.85rem; color: #4a6b54; }
+.stat-tile .value { font-size: 1.4rem; font-weight: 800; color: var(--brand-green-dark); }
+.stat-tile.warn .value { color: #b95000; }
+.stat-tile.bad  .value { color: #b3261e; }
+
+/* ---------- Tabs ---------- */
+.nav-tabs .nav-link {
+  color: var(--brand-green-dark);
+  font-weight: 600;
+  border: none;
+  border-bottom: 3px solid transparent;
+}
+.nav-tabs .nav-link.active {
+  background: transparent;
+  color: var(--brand-green);
+  border-bottom-color: var(--brand-green);
+}
+
+/* ---------- Forms ---------- */
+.form-label { font-weight: 600; color: #2c4a36; }
+.form-control:focus, .form-select:focus {
+  border-color: var(--brand-green);
+  box-shadow: 0 0 0 0.18rem rgba(31, 122, 58, 0.15);
+}
+
+/* إخفاء أسهم زيادة/نقصان حقول الأرقام */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+/* ---------- Badges ---------- */
+.badge-status {
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+}
+.badge-status.pending { background: #fff3cd; color: #8a5d00; }
+.badge-status.approved { background: #d1f0db; color: #145c2a; }
+.badge-status.rejected { background: #fde0de; color: #8a1d18; }
+.badge-status.open { background: #e0eaff; color: #1a3a8a; }
+
+/* ---------- Tables ---------- */
+.table-soft thead th {
+  background: var(--brand-green-light);
+  color: var(--brand-green-dark);
+  font-weight: 700;
+  border: none;
+}
+.table-soft tbody td { vertical-align: middle; }
+
+/* ---------- Animations ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp .35s ease; }
+
+/* ---------- Hero / start panel ---------- */
+.start-hero {
+  background: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+  color: #fff;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: var(--card-shadow);
+}
+.start-hero h1 { font-weight: 800; }
+.start-hero .branch-pill {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* ---------- Image preview ---------- */
+.inventory-img-preview {
+  max-width: 100%;
+  max-height: 280px;
+  border-radius: 12px;
+  border: 2px dashed var(--brand-green);
+  padding: 6px;
+  background: #fff;
+}
+
+/* ---------- Utility ---------- */
+.text-brand { color: var(--brand-green-dark) !important; }
+.bg-brand-light { background: var(--brand-green-light) !important; }
+.divider-soft { border-top: 1px dashed #cfe3d4; margin: 16px 0; }
+
+/* ---------- Mobile tweaks ---------- */
+@media (max-width: 576px) {
+  .stat-tile .value { font-size: 1.1rem; }
+  .start-hero { padding: 20px; }
+}
