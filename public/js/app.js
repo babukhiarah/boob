@@ -258,43 +258,29 @@ function infoTab(sh, ro) {
 
 function inventoryTab(sh, ro) {
   return `
-    <div class="row g-3">
-      ${sh.products.map((p, i) => {
-        const { available, sold, value } = Calc.productLine(p);
-        return `
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="product-card">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6>${p.name}</h6>
-              <span class="price-chip">${Utils.fmt(p.price)}</span>
-            </div>
-            <div class="row g-2">
-              <div class="col-6">
-                <label class="form-label small">المستلم</label>
-                <input ${ro} type="number" step="1" class="form-control form-control-sm" data-prod="${i}" data-field="received" value="${p.received}">
-              </div>
-              <div class="col-6">
-                <label class="form-label small">الإضافة</label>
-                <input ${ro} type="number" step="1" class="form-control form-control-sm" data-prod="${i}" data-field="added" value="${p.added}">
-              </div>
-              <div class="col-12">
-                <label class="form-label small">التسليم نهاية الوردية</label>
-                <input ${ro} type="number" step="1" class="form-control form-control-sm" data-prod="${i}" data-field="delivered" value="${p.delivered}">
-              </div>
-            </div>
-            <div class="sold-line d-flex justify-content-between">
-              <span>المتاح: <strong>${available}</strong> • المباع: <strong>${sold}</strong></span>
-              <span>القيمة: <strong>${Utils.fmt(value)}</strong></span>
-            </div>
-          </div>
-        </div>`;
-      }).join("")}
+    <div class="inventory-wrapper">
+
+      <div class="alert alert-success mb-3">
+        <strong>الجرد المصنف</strong>
+        <br>
+        تم تنظيم المنتجات ضمن فئات لتسهيل الإدخال وتقليل الأخطاء.
+      </div>
+
+      ${InventoryUI.renderCategorizedInventory(
+        sh.products,
+        ro
+      )}
+
     </div>
   `;
 }
 
 function bindShiftScreen() {
   const editing = !!(Shift.state && Shift.state._editMode);
+     // تشغيل الأكورديون بعد رسم الجرد المصنف
+  if (typeof InventoryUI !== "undefined") {
+    InventoryUI.initAccordions();
+  }
   // bind primitive fields
   document.querySelectorAll("[data-bind]").forEach(inp => {
     inp.addEventListener("input", () => {
@@ -370,7 +356,9 @@ function bindShiftScreen() {
 
 function updateStats() {
   const sum = Calc.summary(Shift.state);
+
   const tiles = document.querySelectorAll(".stat-tile .value");
+
   if (tiles.length >= 5) {
     tiles[0].textContent = Utils.fmt(sum.sales);
     tiles[1].textContent = Utils.fmt(sum.expected);
@@ -378,59 +366,39 @@ function updateStats() {
     tiles[3].textContent = Utils.fmt(sum.visaDiff);
     tiles[4].textContent = Utils.fmt(sum.clickDiff);
   }
-  // refresh inventory sold/value lines
-  document.querySelectorAll(".product-card").forEach((card, i) => {
-    const { available, sold, value } = Calc.productLine(Shift.state.products[i]);
+
+  // تحديث بيانات المنتجات داخل الفئات المصنفة
+  const processed = new Set();
+
+  document.querySelectorAll("[data-prod]").forEach(inp => {
+    const idx = Number(inp.dataset.prod);
+
+    if (processed.has(idx)) return;
+    processed.add(idx);
+
+    const product = Shift.state.products[idx];
+    if (!product) return;
+
+    const card = inp.closest(".product-card");
+    if (!card) return;
+
     const line = card.querySelector(".sold-line");
-    if (line) line.innerHTML = `<span>المتاح: <strong>${available}</strong> • المباع: <strong>${sold}</strong></span><span>القيمة: <strong>${Utils.fmt(value)}</strong></span>`;
+    if (!line) return;
+
+    const { available, sold, value } =
+      Calc.productLine(product);
+
+    line.innerHTML = `
+      <span>
+        المتاح: <strong>${available}</strong>
+        • المباع: <strong>${sold}</strong>
+      </span>
+      <span>
+        القيمة: <strong>${Utils.fmt(value)}</strong>
+      </span>
+    `;
   });
 }
-
-/* ---------- Report screen (بعد تسليم الوردية) ---------- */
-function reportScreen(sh) {
-  // نص التقرير العربي الذي سيُرسَل لواتساب ويُعرَض على الشاشة
-  const text = Report.buildText(sh);
-  return `
-    <div class="row justify-content-center fade-in">
-      <div class="col-lg-8">
-        <div class="card card-soft">
-          <div class="card-header card-header-brand d-flex justify-content-between align-items-center">
-            <span>تقرير الوردية</span>
-            <span class="badge bg-success">تم الاعتماد</span>
-          </div>
-          <div class="card-body">
-            <pre id="reportText" style="
-              direction: rtl;
-              text-align: right;
-              font-family: 'Tajawal', sans-serif;
-              font-size: 15px;
-              line-height: 1.9;
-              white-space: pre-wrap;
-              background: #f8faf7;
-              border: 1px solid #e3e8e0;
-              border-radius: 10px;
-              padding: 16px;
-              margin: 0;
-            ">${text.replace(/</g, "&lt;")}</pre>
-
-            <div class="d-flex flex-wrap gap-2 mt-3">
-              <button id="btnWhatsApp" class="btn btn-success">
-                📱 إرسال واتساب
-              </button>
-              <button id="btnReportPdf" class="btn btn-brand">
-                📄 تحميل PDF
-              </button>
-              <button id="btnReportClose" class="btn btn-outline-secondary ms-auto">
-                إغلاق والعودة
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
 function bindReportScreen() {
   const sh = lastReportShift;
   if (!sh) return;
