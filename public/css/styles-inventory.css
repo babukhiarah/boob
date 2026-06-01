@@ -1,0 +1,188 @@
+/* ============================================================
+   styles-inventory.css
+   - تصميم الاكورديون والفئات المنظمة
+   - دعم RTL والجوال والتفاعلات
+   ============================================================ */
+
+/* ---------- Accordion / Categorized Inventory ---------- */
+.inventory-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inventory-category {
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e5efe7;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.inventory-category:hover {
+  border-color: var(--brand-green);
+  box-shadow: 0 4px 14px rgba(20, 92, 42, 0.08);
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--brand-green-light), #f0f8f3);
+  color: var(--brand-green-dark);
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.category-header:hover {
+  background: linear-gradient(135deg, #d6ecdb, #e8f5ec);
+}
+
+.category-icon {
+  font-size: 1.5rem;
+  display: inline-block;
+}
+
+.category-title {
+  flex: 1;
+  font-size: 1.1rem;
+  text-align: right;
+  margin-right: auto;
+}
+
+.category-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  background: var(--brand-green);
+  color: #fff;
+  border-radius: 999px;
+}
+
+.collapse-icon {
+  font-size: 0.9rem;
+  color: var(--brand-green-dark);
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.category-header[aria-expanded="false"] .collapse-icon {
+  transform: rotate(-90deg);
+}
+
+.category-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: #fafbfa;
+}
+
+/* ---------- Product Card (داخل الفئة) ---------- */
+.category-items .product-card {
+  border: 1px solid #e5efe7;
+  border-radius: 10px;
+  background: #fff;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+
+.category-items .product-card:hover {
+  border-color: var(--brand-green);
+  box-shadow: 0 2px 8px rgba(20, 92, 42, 0.1);
+}
+
+.category-items .product-card h6 {
+  color: var(--brand-green-dark);
+  font-weight: 700;
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.category-items .product-card .price-chip {
+  display: inline-block;
+  background: var(--brand-green-light);
+  color: var(--brand-green-dark);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.category-items .product-card .sold-line {
+  font-size: 0.85rem;
+  color: #2c5e3f;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #d6ecdb;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- Mobile Responsive ---------- */
+@media (max-width: 768px) {
+  .category-header {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .category-title {
+    font-size: 1rem;
+  }
+
+  .category-icon {
+    font-size: 1.3rem;
+  }
+
+  .category-items {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .category-items .product-card {
+    padding: 10px;
+  }
+
+  .inventory-category {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .category-header {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .category-count {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+  }
+
+  .category-items {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .category-items .product-card .sold-line {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* ---------- Animation للانهيار والتوسع ---------- */
+.collapse {
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.collapse.show {
+  max-height: 10000px;
+}
