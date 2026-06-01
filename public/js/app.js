@@ -260,12 +260,6 @@ function inventoryTab(sh, ro) {
   return `
     <div class="inventory-wrapper">
 
-      <div class="alert alert-success mb-3">
-        <strong>الجرد المصنف</strong>
-        <br>
-        تم تنظيم المنتجات ضمن فئات لتسهيل الإدخال وتقليل الأخطاء.
-      </div>
-
       ${InventoryUI.renderCategorizedInventory(
         sh.products,
         ro
