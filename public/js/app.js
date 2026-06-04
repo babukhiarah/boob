@@ -36,6 +36,7 @@ function renderRoot() {
     if (btnEdit) btnEdit.onclick = onEditLast;
     return;
   }
+  console.log("STATE", Shift.state);
   root.innerHTML = shiftScreen();
   bindShiftScreen();
 }
