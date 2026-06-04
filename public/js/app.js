@@ -94,6 +94,14 @@ function onStartShift() {
 function onEditLast() {
   if (Shift.startEditLast()) renderRoot();
 }
+function onEditLast() {
+  console.log("EDIT CLICKED");
+
+  if (Shift.startEditLast()) {
+    console.log("SHIFT LOADED");
+    renderRoot();
+  }
+}
 
 /* ---------- Shift screen ---------- */
 function shiftScreen() {
